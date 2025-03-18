@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" ng-app="gameApp">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Database</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://cdn.rawgit.com/sroze/ngInfiniteScroll/1.0.0/build/ng-infinite-scroll.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/gameController.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+
+</head>
+
+    <body ng-controller="gameController" class="bg-gradient-to-b from-gray-900 to-gray-700 text-white font-sans">
+
+    <div class="flex h-screen">
+        <!-- Sidebar (Fixed width and scrollable) -->
+        <div class="w-1/3 lg:w-1/4 bg-gradient-to-b from-gray-900 to-indigo-600 text-white p-8 space-y-6 overflow-y-auto">
+            <h1 class="text-3xl font-bold text-center text-indigo-300">Game Database</h1>
+
+            <!-- Search Bar -->
+            <div class="relative">
+                <input type="text" ng-model="searchText" placeholder="Search..." class="w-full p-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-800 text-white placeholder-gray-400" />
+            </div>
+
+            <!-- Genre Section -->
+            <div>
+                <h3 class="text-lg font-semibold text-indigo-300">Genre</h3>
+                <div class="mt-2 grid grid-cols-2 gap-4">
+                    <label ng-repeat="x in genreLabelObjects" class="flex items-center space-x-2 text-sm text-white">
+                        <input type="checkbox" ng-model="x.selected" ng-click="changeGenreCheckbox($index)" class="h-4 w-4 text-indigo-500 border-gray-300 rounded" />
+                        <span>{{ x.name }}</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Developer Section -->
+            <div>
+                <h3 class="text-lg font-semibold text-indigo-300">Developer</h3>
+                <div class="mt-2 grid grid-cols-2 gap-4">
+                    <label ng-repeat="x in devLabelObjects" class="flex items-center space-x-2 text-sm text-white">
+                        <input type="checkbox" ng-model="x.selected" ng-click="changeDevCheckbox($index)" class="h-4 w-4 text-indigo-500 border-gray-300 rounded" />
+                        <span>{{ x.name }}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Cards -->
+        <div class="flex-1 overflow-y-auto p-8 bg-gray-900">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="game-card" ng-repeat="game in games | filter:{title:searchText} | filter:filterGamesByGenre | filter:filterGamesByDev">
+                    <div class="bg-gray-800 shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-indigo-400">{{game.title}}</h3>
+                            <h4 class="text-lg text-gray-300">{{game.developer}}</h4>
+                            <p class="text-sm text-gray-500 mt-2">{{game.release_date}}</p>
+                            <p class="text-sm text-indigo-400 mt-1">{{game.genre}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>
